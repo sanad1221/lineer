@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Linear Algebra Arena</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0f1e;--bg2:#141a33;--card:#161d3a;--ink:#f3efe3;--mut:#9aa3c7;--gold:#e4c06a;--gold2:#b98b2f;--ok:#37d39a;--bad:#ff6b7a;--line:rgba(228,192,106,.22);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f7f3e8;--bg2:#efe7d2;--card:#fffdf6;--ink:#1d2140;--mut:#5d6488;--gold:#a8791a;--gold2:#7d5a10;--ok:#0f9d6a;--bad:#d03a4d;--line:rgba(125,90,16,.25)}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(900px 500px at 85% -10%,rgba(228,192,106,.16),transparent),radial-gradient(700px 500px at 0% 100%,rgba(90,110,255,.14),transparent),var(--bg);color:var(--ink);font-family:Cairo,"Segoe UI",Tahoma,sans-serif;line-height:1.7}
+.wrap{max-width:760px;margin:0 auto;padding:22px 16px 60px}
+h1,h2,.num{font-family:"Playfair Display",Georgia,serif}
+.brand{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.logo{font-family:"Playfair Display",Georgia,serif;font-weight:900;color:var(--gold);letter-spacing:.5px;font-size:20px}
+.pill{border:1px solid var(--line);border-radius:99px;padding:3px 12px;font-size:13px;color:var(--mut)}
+.card{background:linear-gradient(160deg,var(--card),var(--bg2));border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 20px 50px rgba(0,0,0,.28)}
+.hero{text-align:center;padding:40px 22px}
+.hero h1{font-size:clamp(34px,8vw,56px);margin:6px 0;background:linear-gradient(90deg,var(--gold),#fff2c4,var(--gold2));-webkit-background-clip:text;background-clip:text;color:transparent;direction:ltr}
+.hero p{color:var(--mut);max-width:460px;margin:8px auto 22px}
+.stats{display:flex;gap:10px;justify-content:center;margin:18px 0 26px;flex-wrap:wrap}
+.stats div{border:1px solid var(--line);border-radius:14px;padding:8px 16px}
+.stats b{display:block;font-size:22px;color:var(--gold);font-family:"Playfair Display",Georgia,serif}
+button{font-family:inherit;cursor:pointer}
+.btn{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1b1406;border:0;border-radius:14px;padding:12px 30px;font-weight:800;font-size:17px;transition:.2s;box-shadow:0 8px 24px rgba(228,192,106,.28)}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost{background:transparent;color:var(--gold);border:1px solid var(--line);box-shadow:none}
+.bar{height:6px;background:var(--line);border-radius:9px;overflow:hidden;margin-bottom:16px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold2),var(--gold));transition:width .4s}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.tag{font-size:12px;padding:2px 10px;border-radius:99px;background:rgba(228,192,106,.13);color:var(--gold);border:1px solid var(--line)}
+.q{font-size:19px;font-weight:600;margin:6px 0 18px}
+.q .num{color:var(--gold);font-size:30px;margin-inline-end:8px}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:12px;align-items:center;text-align:start;background:rgba(255,255,255,.03);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:16px;transition:.18s}
+.opt:hover:not(:disabled){border-color:var(--gold);transform:translateX(-3px)}
+.opt b{flex:none;width:30px;height:30px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--gold);color:var(--gold);font-family:"Playfair Display",Georgia,serif}
+.opt span{direction:ltr;unicode-bidi:plaintext;flex:1}
+.opt.ok{border-color:var(--ok);background:rgba(55,211,154,.12)}
+.opt.ok b{background:var(--ok);color:#06231a;border-color:var(--ok)}
+.opt.bad{border-color:var(--bad);background:rgba(255,107,122,.12)}
+.opt.bad b{background:var(--bad);color:#2b0509;border-color:var(--bad)}
+.opt:disabled{cursor:default}
+.an{margin-top:18px;border-radius:16px;padding:16px 18px;border:1px solid var(--line);border-inline-start:5px solid var(--gold);background:rgba(228,192,106,.07);animation:up .35s}
+.an.ok{border-inline-start-color:var(--ok)}.an.bad{border-inline-start-color:var(--bad)}
+.an h3{margin:0 0 4px;font-size:17px}
+.an p{margin:0;color:var(--ink);opacity:.92}
+@keyframes up{from{opacity:0;transform:translateY(10px)}}
+.mx{display:inline-grid;direction:ltr;border-inline:2px solid var(--gold);border-radius:8px;padding:2px 10px;margin:2px 6px;vertical-align:middle;font-family:"Playfair Display",Georgia,serif}
+.mx>span{display:flex;gap:14px}.mx i{font-style:normal;min-width:2.2ch;text-align:center}
+.row{display:flex;justify-content:space-between;align-items:center;margin-top:18px;gap:10px}
+.score{font-family:"Playfair Display",Georgia,serif;font-size:76px;color:var(--gold);line-height:1;text-align:center;direction:ltr}
+.tp{display:grid;grid-template-columns:90px 1fr 48px;gap:10px;align-items:center;margin:8px 0;font-size:14px;direction:ltr}
+.tp div{height:9px;background:var(--line);border-radius:9px;overflow:hidden}.tp div i{display:block;height:100%;background:var(--gold)}
+.rv{border-top:1px dashed var(--line);padding:10px 0;font-size:14px}
+.rv small{color:var(--mut)}
+.pw{text-align:center;padding:10px 16px 34px;color:var(--mut);font-size:14px;letter-spacing:1px;direction:ltr}
+.pw b{font-family:"Playfair Display",Georgia,serif;font-size:17px;background:linear-gradient(90deg,var(--gold),#fff2c4,var(--gold2));-webkit-background-clip:text;background-clip:text;color:transparent}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<footer class="pw">Powered by <b>Gasser</b></footer>
+<script>
+const Q=[
+{s:"Final 2021",t:"Eigen",q:"المصفوفة {{4 -2 5;0 1 3;0 0 2}} ما هي الـ eigenvalues؟",o:["4 , 1 , 2","4 , -2 , 2","4 , 1 , 5","0 , 1 , 2"],e:"المصفوفة مثلثية علوية، فالـ eigenvalues هي عناصر القطر الرئيسي مباشرة بدون فتح det(A−λI). فكرة توفر عليك وقت كبير في الامتحان."},
+{s:"Final 2021",t:"Eigen",q:"A نفس المصفوفة السابقة. أي متجه هو eigenvector لـ λ = 1؟",o:["(2, 3, 0)","(1, 1, 0)","(3, 2, 0)","(0, 1, 1)"],e:"نحل (A−I)x=0: الصف الثالث يعطي z=0، والأول 3x−2y=0 فنحصل على (2,3,0). ولاحظ أن v=(1,0,0) نفسه eigenvector لـ λ=4."},
+{s:"Final 2021",t:"Systems",q:"حل النظام Ax=b حيث A هي نفس المصفوفة و b=(11, 4, 2):",o:["(2, 1, 1)","(1, 2, 1)","(1, 1, 2)","(11, 4, 2)"],e:"مثلثية، فنحل بالتعويض العكسي: 2z=2 فـ z=1، ثم y+3=4 فـ y=1، ثم 4x−2+5=11 فـ x=2."},
+{s:"Final 2021",t:"Vector spaces",q:"المجموعة S = {(2,1,3), (3,2,1), (1,2,3)} في R³:",o:["مستقلة خطياً وتكوّن basis (det = 12)","معتمدة خطياً (det = 0)","مستقلة لكن لا تكوّن basis","تولّد مستوى فقط"],e:"نحسب det للمصفوفة المكوّنة من المتجهات: 2(4) − 1(8) + 3(4) = 12 ≠ 0. ثلاثة متجهات مستقلة في R³ تعني تلقائياً أنها basis."},
+{s:"Final 2021",t:"Vector spaces",q:"اكتب (4,1,4) كتركيب خطي من (2,1,3), (3,2,1), (1,2,3) بالترتيب. المعاملات:",o:["(2 , 1/4 , -3/4)","(1 , 1 , 1)","(2 , -1/4 , 3/4)","(3 , 1 , -1)"],e:"نحل 2a+3b+c=4 و a+2b+2c=1 و 3a+b+3c=4. من الثانية a=1−2b−2c، وبالتعويض c=−3/4 ثم b=1/4 ثم a=2. تحقق بالتعويض في المعادلة الأولى."},
+{s:"Final 2021",t:"Vector spaces",q:"basis الـ null space للمصفوفة {{1 -2 5;2 3 1;3 8 -3}} هو:",o:["(-17, 9, 7)","(17, 9, 7)","(-17, 9, -7)","(1, 2, 3)"],e:"R2−2R1 تعطي (0,7,−9) وR3−3R1 تعطي (0,14,−18) وهي ضعف السابقة، إذن rank=2 وnullity=1. من y=9z/7 و x=2y−5z نحصل على (−17,9,7). تأكد: −17−18+35=0."},
+{s:"Final 2021",t:"Vector spaces",q:"rank المصفوفة {{1 1 0 2;1 0 1 1;3 2 1 5;2 1 1 3}} يساوي:",o:["2","3","1","4"],e:"R2−R1 وR3−3R1 وR4−2R1 كلها تعطي نفس الصف (0,−1,1,−1). يعني صف واحد فقط يضاف بجانب الصف الأول، فالـ rank = 2 وبالتالي بعد column space وrow space = 2."},
+{s:"Final 2019",t:"Eigen",q:"B = {{-3 4;-5 6}} ما هي eigenvalues للمصفوفة B³؟",o:["1 , 8","-27 , 216","3 , 6","1 , 6"],e:"tr=3 وdet=2 إذن λ²−3λ+2=0 فـ λ=1,2. وeigenvalues لـ B³ هي مكعب eigenvalues B أي 1 و 8."},
+{s:"Final 2019",t:"Eigen",q:"باستخدام Cayley-Hamilton على نفس B، قيمة B⁴ هي:",o:["{{-59 60;-75 76}}","{{-11 12;-15 16}}","{{59 60;75 76}}","{{-27 28;-35 36}}"],e:"من المعادلة المميزة B²=3B−2I. نحسب B²={{-11 12;-15 16}} ثم B³=3B²−2B={{-27 28;-35 36}} ثم B⁴=3B³−2B²={{-59 60;-75 76}}. الخيارات الخطأ هي B² وB³ بالضبط، فاحذر!"},
+{s:"Final 2019",t:"Determinants",q:"مساحة المثلث رؤوسه A(1,0), B(2,2), C(4,3):",o:["3/2","3","5/2","1/2"],e:"المساحة = ½ |det| لمصفوفة الرؤوس مع عمود الوحدات، وتساوي ½ |(2−1)(3−0) − (4−1)(2−0)| = ½ |3−6| = 3/2."},
+{s:"Final 2019",t:"Systems",q:"النظام Ax = (1,1,1) حيث A = {{1 1 -1;1 0 1;3 2 -1}}:",o:["لا يوجد حل (rank A=2 و rank [A|b]=3)","حل وحيد","عدد لا نهائي من الحلول","x = (1,1,1) هو الحل"],e:"R2−R1 وR3−3R1 يعطيان الصفين (0,−1,2 | 0) و(0,−1,2 | −2). ثم R3−R2 تعطي 0 = −2 وهذا تناقض، فالنظام inconsistent."},
+{s:"Mid 2023",t:"Systems",q:"عند موازنة FeCl₂ + Na₃PO₄ → Fe₃(PO₄)₂ + NaCl بطريقة Gauss، المعاملات بالترتيب هي:",o:["3 , 2 , 1 , 6","1 , 2 , 3 , 6","3 , 1 , 1 , 6","2 , 3 , 1 , 6"],e:"نكوّن معادلة لكل عنصر: Fe: x=3z، Cl: 2x=u، Na: 3y=u، PO₄: y=2z. النظام homogeneous بمتغير حر، ونأخذ z=1 فيطلع (3,2,1,6)."},
+{s:"Mid 2023",t:"Systems",q:"النظام x+y−z=2, x+2y+z=3, x+y+(λ²−5)z=λ لا يملك حل عندما:",o:["λ = −2","λ = 2","λ = ±2","لكل λ ≠ 2"],e:"بعد الحذف نصل إلى (λ²−4)z = λ−2. عند λ=2 تصبح 0=0 فتوجد حلول لا نهائية. عند λ=−2 تصبح 0=−4 وهذا مستحيل فلا حل. وفي بقية القيم unique."},
+{s:"Mid 2022",t:"Systems",q:"حل النظام x+2y+3z=9, 2x−y+z=8, 3x+6y−z=−3 هو:",o:["(2, -1, 3)","(-1, 2, 3)","(9, 8, -3)","(3, -1, 2)"],e:"det A = 50، ومعكوسها بطريقة Gauss-Jordan أول عنصر فيه −0.1. ثم x = A⁻¹b = (2,−1,3). سريع جداً تتأكد منه بالتعويض: 2−2+9=9."},
+{s:"Mid 2022",t:"Matrices",q:"الجزء الـ skew-symmetric (Q) للمصفوفة A = {{2 3 5;1 0 -1;2 4 -3}} هو:",o:["{{0 1 1.5;-1 0 -2.5;-1.5 2.5 0}}","{{0 1 1.5;1 0 2.5;1.5 2.5 0}}","{{0 2 3;-2 0 -5;-3 5 0}}","{{0 -1 -1.5;1 0 2.5;1.5 -2.5 0}}"],e:"Q=½(A−Aᵀ). الفرق يعطي {{0 2 3;-2 0 -5;-3 5 0}} ثم نضرب في ½. الخيار الثاني symmetric (غير skew) والثالث نسي ½ والرابع انعكست علاماته."},
+{s:"Mid 2022",t:"Matrices",q:"إذا كانت A = {{2 1 -2;-1 0 3}} و B = {{3 1;2 -1;3 0}} فإن tr(AB) =",o:["1","2","-1","3"],e:"AB = {{2 1;6 -1}} (حجمها 2×2). trace = 2 + (−1) = 1."},
+{s:"Mid 2021",t:"Matrices",q:"الحل الصحيح لـ |diag(2,−1,5)|·X − 2A⁻¹ + 3I + DB = 0 حيث A={{2 1;5 2}} هو:",o:["{{0.5 0.2;-1.8 -2.2}}","{{0.5 -0.2;1.8 -2.2}}","{{-0.5 0.2;1.8 2.2}}","{{0.5 0.2;-1.8 2.2}}"],e:"|diag| = 2·(−1)·5 = −10 فنحصل على X = −0.2A⁻¹ + 0.3I + 0.1DB. مع A⁻¹={{-2 1;5 -2}} و DB={{-2 4;-8 -29}} يطلع الناتج. أخطاء الإشارات هي أكثر فخ هنا."},
+{s:"Mid 2021",t:"Systems",q:"النظام [3 −2 1; 5 −8 9; 2 1 a]·x = (b, 3, −1) له عدد لا نهائي من الحلول عندما:",o:["a = −3 , b = 1/3","a = −3 , b = 3","a = 3 , b = 1/3","a ≠ −3 , b أي قيمة"],e:"det = −14(a+3)، فالحل الوحيد عندما a ≠ −3 وb أي عدد. عند a=−3 يجب أيضاً أن يكون النظام consistent، والشرط 3 − 9b = 0 يعطي b = 1/3."},
+{s:"Mid 2019",t:"Vector spaces",q:"معادلة المستوى المار بالنقاط (0,−1,0), (−1,3,2), (−2,0,1):",o:["2x − 3y + 7z − 3 = 0","2x + 3y + 7z − 3 = 0","2x − 3y + 7z + 3 = 0","x − 3y + 7z − 3 = 0"],e:"المتجهان (−1,4,2) و(−2,1,1) حاصل ضربهما الاتجاهي (2,−3,7) هو normal المستوى. بالتعويض بالنقطة الأولى نحصل على الثابت −3. تحقق من نقطة ثانية: −2−9+14−3=0."},
+{s:"Mid 2023",t:"Determinants",q:"في إثبات adj(AB) = adj(B)·adj(A) نستخدم:",o:["adj(X)=|X|·X⁻¹ و (AB)⁻¹=B⁻¹A⁻¹ و |AB|=|A||B|","adj(X)=Xᵀ و |AB|=|A|+|B|","adj(AB)=adj(A)adj(B) لأن الضرب إبدالي","adj(X)=|X|·X فقط"],e:"adj(AB)=|AB|(AB)⁻¹=|A||B|B⁻¹A⁻¹=(|B|B⁻¹)(|A|A⁻¹)=adj(B)adj(A). ترتيب الضرب بين المصفوفات يتعكس، وهذه هي الفكرة الأساسية."},
+{s:"Mid 2020",t:"Eigen",q:"A = {{2 -12;1 -5}} له eigenvalues −1 و −2. الـ eigenvector لـ λ = −1 هو:",o:["(4, 1)","(3, 1)","(1, 4)","(12, 1)"],e:"(A+I)x=0 يعطي x₁−4x₂=0 فـ (4,1). المتجه (3,1) هو لـ λ=−2 وهو الفخ الأشهر."},
+{s:"Mid 2019",t:"Eigen",q:"المعادلة المميزة (characteristic equation) للمصفوفة {{2 3 0;1 0 4;1 -1 2}}:",o:["λ³ − 4λ² + 5λ − 14 = 0","λ³ − 4λ² + 5λ + 14 = 0","λ³ + 4λ² + 5λ − 14 = 0","λ³ − 5λ² + 4λ − 14 = 0"],e:"معامل λ² هو −tr(A) = −4، والثابت هو −det(A) = −14 (لأن det=14). ومنها A³ = 4A² − 5A + 14I وتساعدك في حساب A⁴ = 11A² − 6A + 56I."},
+{s:"Mid 2020",t:"Determinants",q:"لو A مصفوفة 3×3 فإن |5A| =",o:["125 |A|","5 |A|","15 |A|","25 |A|"],e:"كل صف من الصفوف الثلاثة اتضرب في 5، فنخرج 5 ثلاث مرات: 5³ = 125. أما (5A)⁻¹ فتساوي (1/5)A⁻¹."}
+];
+const L=["A","B","C","D"],$=s=>document.querySelector(s),app=$("#app");
+const mx=s=>s.replace(/\{\{(.+?)\}\}/g,(_,m)=>'<span class="mx">'+m.split(';').map(r=>'<span>'+r.trim().split(/\s+/).map(c=>'<i>'+c+'</i>').join('')+'</span>').join('')+'</span>');
+let i=0,sc=0,st=0,best=0,res=[],ord=[];
+const shuf=a=>{a=a.slice();for(let k=a.length-1;k>0;k--){const j=Math.random()*(k+1)|0;[a[k],a[j]]=[a[j],a[k]]}return a};
+const brand=r=>'<div class="brand"><span class="logo">∑ Linear Algebra Arena</span>'+r+'</div>';
+function home(){
+ app.innerHTML=brand('')+'<div class="card hero"><span class="tag">FCDS · جامعة الإسكندرية</span><h1>Linear Algebra<br>Arena</h1><p>أسئلة امتحانات حقيقية بنظام اختيار من متعدد. اختار إجابتك، يظهر لك الصح والغلط فوراً، ويتبعه تحليل لكل سؤال.</p><div class="stats"><div><b>'+Q.length+'</b>سؤال</div><div><b>5</b>مواضيع</div><div><b>7</b>امتحانات</div></div><button class="btn" id="go">ابدأ التحدي</button></div>';
+ $("#go").onclick=()=>start(Q.map((_,k)=>k));
+}
+function start(list){ord=list;i=0;sc=0;st=0;res=[];show()}
+function show(){
+ const d=Q[ord[i]],o=shuf(d.o.map((t,k)=>({t,c:k==0})));d._o=o;
+ app.innerHTML=brand('<span class="pill">🔥 '+st+' &nbsp;|&nbsp; ⭐ '+sc+'</span>')+'<div class="bar"><i style="width:'+(i/ord.length*100)+'%"></i></div><div class="card"><div class="meta"><span class="tag">'+d.t+'</span><span class="tag">'+d.s+'</span><span class="pill">'+(i+1)+' / '+ord.length+'</span></div><div class="q"><span class="num">'+(i+1)+'</span>'+mx(d.q)+'</div><div class="opts">'+o.map((x,k)=>'<button class="opt" data-k="'+k+'"><b>'+L[k]+'</b><span>'+mx(x.t)+'</span></button>').join('')+'</div><div id="an"></div></div>';
+ document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>pick(+b.dataset.k));
+}
+function pick(k){
+ const d=Q[ord[i]],o=d._o,ok=o[k].c;
+ document.querySelectorAll(".opt").forEach((b,j)=>{b.disabled=true;if(o[j].c)b.classList.add("ok");else if(j==k)b.classList.add("bad")});
+ if(ok){sc++;st++;best=Math.max(best,st)}else st=0;
+ res.push({d,ok,mine:o[k].t});
+ const last=i==ord.length-1;
+ $("#an").innerHTML='<div class="an '+(ok?'ok':'bad')+'"><h3>'+(ok?'✓ إجابة صحيحة، ممتاز!':'✗ إجابة غير صحيحة')+'</h3><p><b>التحليل:</b> '+mx(d.e)+'</p></div><div class="row"><span class="pill">'+d.t+' · '+d.s+'</span><button class="btn" id="nx">'+(last?'عرض النتيجة':'السؤال التالي ←')+'</button></div>';
+ $("#nx").onclick=()=>{i++;last?end():show()};
+ $("#nx").scrollIntoView({behavior:"smooth",block:"center"});
+}
+function end(){
+ const p=Math.round(sc/ord.length*100),T={};
+ res.forEach(r=>{const t=r.d.t;T[t]=T[t]||[0,0];T[t][1]++;if(r.ok)T[t][0]++});
+ const bad=res.filter(r=>!r.ok);
+ app.innerHTML=brand('<span class="pill">أفضل سلسلة: '+best+'</span>')+'<div class="card"><div class="score">'+p+'%</div><p style="text-align:center;color:var(--mut)">'+sc+' صح من '+ord.length+' · '+(p>=85?'مستوى ممتاز، جاهز للامتحان 👑':p>=60?'جيد جداً، راجع نقاط الضعف':'محتاج مراجعة، وانت قدها')+'</p><h2 style="font-size:20px">التحليل حسب الموضوع</h2>'+Object.entries(T).map(([t,v])=>'<div class="tp"><span>'+t+'</span><div><i style="width:'+v[0]/v[1]*100+'%"></i></div><span>'+v[0]+'/'+v[1]+'</span></div>').join('')+(bad.length?'<h2 style="font-size:20px;margin-top:22px">مراجعة الأخطاء</h2>'+bad.map(r=>'<div class="rv"><b>'+mx(r.d.q)+'</b><br><small>إجابتك: '+mx(r.mine)+'</small><br><small style="color:var(--ok)">الصحيح: '+mx(r.d.o[0])+'</small></div>').join(''):'')+'<div class="row"><button class="btn" id="again">ابدأ من جديد</button>'+(bad.length?'<button class="btn ghost" id="redo">أعد الأسئلة الغلط فقط</button>':'')+'</div></div>';
+ $("#again").onclick=home;
+ if(bad.length)$("#redo").onclick=()=>start(bad.map(r=>Q.indexOf(r.d)));
+}
+home();
+</script>
+</body>
+</html>
